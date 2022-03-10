@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Categories from './Categories';
 
 class InicialPage extends React.Component {
   render() {
@@ -17,7 +18,10 @@ class InicialPage extends React.Component {
           </button>
         </Link>
         <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
+        <Categories />
+
       </div>
+
     );
   }
 }
