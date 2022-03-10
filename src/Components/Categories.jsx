@@ -28,9 +28,15 @@ class Categories extends Component {
     return (
       <nav>
         {categArr.map((category) => (
-          <label data-testid="htmlFor" htmlFor="hahaha" key={ category.id }>
+          <label data-testid="htmlFor" htmlFor={ category.id } key={ category.id }>
+            <input
+              data-testid="category"
+              type="radio"
+              id={ category.id }
+              name="hahaha"
+              value={ category.id }
+            />
             { category.name }
-            <input data-testid="category" type="radio" id="hahaha" />
           </label>
         ))}
       </nav>
