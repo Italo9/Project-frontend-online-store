@@ -33,19 +33,20 @@ class InicialPage extends React.Component {
     });
   }
 
-  fetchGetProdutcs = async () => {
+  fetchGetProdutcs = async (categoryId, categoryName) => {
     const {
       seachInput,
-      categArr: productsObj,
+      categArr,
     } = this.state;
+    console.log(categArr);
     if (seachInput.length > 0) {
-      const request = await getProductsFromCategoryAndQuery(productsObj.id, seachInput);
+      const request = await getProductsFromCategoryAndQuery(categArr.id, seachInput);
       console.log(request);
       this.setState({
         productArr: request.results,
       });
     } else {
-      const request = await getProductsFromCategoryAndQuery(productsObj.id, productsObj.name);
+      const request = await getProductsFromCategoryAndQuery(categoryId, categoryName);
       console.log(request);
       this.setState({
         productArr: request.results,
