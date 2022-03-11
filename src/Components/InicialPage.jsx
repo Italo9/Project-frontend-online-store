@@ -83,6 +83,7 @@ class InicialPage extends React.Component {
     });
   }
 
+  // Testando commit
   render() {
     const { seachInput, productArr } = this.state;
     return (
