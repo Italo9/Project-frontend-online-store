@@ -90,11 +90,18 @@ class InicialPage extends React.Component {
         <fieldset>
           <input
             type="text"
+            data-testid="query-input"
             name="name"
             value={ seachInput }
             onChange={ this.addText }
           />
-          <button type="button" onClick={ () => this.fetchGetProdutcs() }>Search</button>
+          <button
+            type="button"
+            onClick={ () => this.fetchGetProdutcs() }
+            data-testid="query-button"
+          >
+            Search
+          </button>
         </fieldset>
         <Link data-testid="shopping-cart-button" to="/shoopingCart">
           <button type="button">
