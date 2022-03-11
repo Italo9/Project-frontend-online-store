@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 class ProductCard extends Component {
   // constructor() {
   //   super();
-
   //   this.state = {
   //     productArr: [],
   //   };
