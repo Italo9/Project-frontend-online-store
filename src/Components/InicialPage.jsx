@@ -83,6 +83,7 @@ class InicialPage extends React.Component {
     });
   }
 
+  // Testando commit
   render() {
     const { seachInput, productArr } = this.state;
     return (
@@ -93,8 +94,15 @@ class InicialPage extends React.Component {
             name="name"
             value={ seachInput }
             onChange={ this.addText }
+            data-testid="query-input"
           />
-          <button type="button" onClick={ () => this.fetchGetProdutcs() }>Search</button>
+          <button
+            type="button"
+            onClick={ () => this.fetchGetProdutcs() }
+            data-testid="query-button"
+          >
+            Search
+          </button>
         </fieldset>
         <Link data-testid="shopping-cart-button" to="/shoopingCart">
           <button type="button">
