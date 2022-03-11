@@ -27,7 +27,7 @@ class ProductCard extends Component {
     const { listProductFilter } = this.props;
     return (
       <div>
-        {(!listProductFilter.length === 0) ? (
+        {(listProductFilter.length === 0) ? (
           listProductFilter.map((product) => (
             <section key={ product.id }>
               <p>{product.title}</p>
