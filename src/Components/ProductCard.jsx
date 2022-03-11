@@ -29,7 +29,7 @@ class ProductCard extends Component {
       <div>
         {(productArr.length !== 0) ? (
           productArr.map((product) => (
-            <section key={ product.id }>
+            <section key={ product.id } data-testid="product">
               <p>{product.title}</p>
               <img src={ product.thumbnail } alt={ product.title } />
               <p>{product.price}</p>
