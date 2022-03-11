@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Categories from './Categories';
 import ProductCard from './ProductCard';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 
 class InicialPage extends React.Component {
   constructor(props) {
@@ -10,13 +10,26 @@ class InicialPage extends React.Component {
     this.state = {
       productArr: [],
       seachInput: '',
-      id: '',
+      categArr: [],
+      // id: '',
       // listProductFilter: [],
       // words: '',
       // Search: '',
     };
   }
 
+  componentDidMount() {
+    this.fetchCategories();
+    // this.fetchGetProdutcs();
+  }
+
+  fetchCategories = async () => {
+    const productsObj = await getCategories();
+    this.setState({
+      categArr: productsObj,
+    });
+    console.log(productsObj);
+  }
   // addText = ({ target }) => {
   //   console.log(target.value);
   //   this.setState({
@@ -53,9 +66,9 @@ class InicialPage extends React.Component {
   //     productArr: productArr.filter((item) => item !== product),
   //   });
   // }
-  componentDidMount() {
-    this.fetchGetProdutcs();
-  }
+  // componentDidMount() {
+  //   this.fetchGetProdutcs();
+  // }
 
   // handleSearch = () => {
   //   const { seachInput, productArr } = this.state;
@@ -75,17 +88,28 @@ class InicialPage extends React.Component {
   }
 
   fetchGetProdutcs = async () => {
-    const { id, seachInput } = this.state;
-    const requestProduct = await getProductsFromCategoryAndQuery(id, seachInput);
-    console.log(requestProduct.results);
-    this.setState({
-      productArr: requestProduct.results,
-    });
+    const {
+      seachInput,
+      categArr: category,
+    } = this.state;
+    if (seachInput.length > 0) {
+      const request = await getProductsFromCategoryAndQuery(category.id, seachInput);
+      console.log(request);
+      this.setState({
+        productArr: request.results,
+      });
+    } else {
+      const request = await getProductsFromCategoryAndQuery(category.id, category.name);
+      console.log(request);
+      this.setState({
+        productArr: request.results,
+      });
+    }
   }
 
   // Testando commit
   render() {
-    const { seachInput, productArr } = this.state;
+    const { seachInput, productArr, categArr } = this.state;
     return (
       <div data-testid="home-initial-message">
         <fieldset>
@@ -110,7 +134,11 @@ class InicialPage extends React.Component {
           </button>
         </Link>
         <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
-        <Categories />
+        <Categories
+          // fetchCategories={ this.fetchCategories }
+          fetchGetProdutcs={ this.fetchGetProdutcs }
+          categArr={ categArr }
+        />
         <section>
           <ProductCard productArr={ productArr } />
         </section>

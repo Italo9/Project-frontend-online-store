@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { getCategories } from '../services/api';
+import PropTypes from 'prop-types';
+// import { getCategories } from '../services/api';
 // import InicialPage from './InicialPage';
 
 class Categories extends Component {
@@ -7,24 +8,25 @@ class Categories extends Component {
     super();
 
     this.state = {
-      categArr: [],
+      // categArr: [],
     };
   }
 
-  componentDidMount() {
-    this.fetchCategories();
-  }
+  // componentDidMount() {
+  //   this.fetchCategories();
+  // }
 
-  fetchCategories = async () => {
-    const productsObj = await getCategories();
-    this.setState({
-      categArr: productsObj,
-    });
-    // console.log(productsObj);
-  }
+  // fetchCategories = async () => {
+  //   const productsObj = await getCategories();
+  //   this.setState({
+  //     categArr: productsObj,
+  //   });
+  //   console.log(productsObj);
+  // }
 
   render() {
-    const { categArr } = this.state;
+    // const { categArr } = this.state;
+    const { fetchGetProdutcs, categArr } = this.props;
     return (
       <nav>
         {categArr.map((category) => (
@@ -35,6 +37,7 @@ class Categories extends Component {
               id={ category.id }
               name="hahaha"
               value={ category.id }
+              onClick={ () => (fetchGetProdutcs(category.id, category.name)) }
             />
             { category.name }
           </label>
@@ -45,4 +48,8 @@ class Categories extends Component {
   }
 }
 
+Categories.propTypes = {
+  fetchGetProdutcs: PropTypes.func.isRequired,
+  categArr: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 export default Categories;
