@@ -10,7 +10,8 @@ class InicialPage extends React.Component {
     this.state = {
       productArr: [],
       seachInput: '',
-      listProductFilter: [],
+      id: '',
+      // listProductFilter: [],
       // words: '',
       // Search: '',
     };
@@ -56,15 +57,15 @@ class InicialPage extends React.Component {
     this.fetchGetProdutcs();
   }
 
-  handleSearch = () => {
-    const { seachInput, productArr } = this.state;
-    const productFilter = productArr
-      .filter((element) => element.title.includes(seachInput));
-    console.log(productFilter);
-    this.setState({
-      listProductFilter: productFilter,
-    });
-  }
+  // handleSearch = () => {
+  //   const { seachInput, productArr } = this.state;
+  //   const productFilter = productArr
+  //     .filter((element) => element.title.includes(seachInput));
+  //   console.log(productFilter);
+  //   this.setState({
+  //     listProductFilter: productFilter,
+  //   });
+  // }
 
   addText = ({ target }) => {
     console.log(target.value);
@@ -74,7 +75,8 @@ class InicialPage extends React.Component {
   }
 
   fetchGetProdutcs = async () => {
-    const requestProduct = await getProductsFromCategoryAndQuery();
+    const { id, seachInput } = this.state;
+    const requestProduct = await getProductsFromCategoryAndQuery(id, seachInput);
     console.log(requestProduct.results);
     this.setState({
       productArr: requestProduct.results,
@@ -82,7 +84,7 @@ class InicialPage extends React.Component {
   }
 
   render() {
-    const { seachInput, listProductFilter } = this.state;
+    const { seachInput, productArr } = this.state;
     return (
       <div data-testid="home-initial-message">
         <fieldset>
@@ -92,7 +94,7 @@ class InicialPage extends React.Component {
             value={ seachInput }
             onChange={ this.addText }
           />
-          <button type="button" onClick={ () => this.handleSearch() }>Search</button>
+          <button type="button" onClick={ () => this.fetchGetProdutcs() }>Search</button>
         </fieldset>
         <Link data-testid="shopping-cart-button" to="/shoopingCart">
           <button type="button">
@@ -102,7 +104,7 @@ class InicialPage extends React.Component {
         <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
         <Categories />
         <section>
-          <ProductCard listProductFilter={ listProductFilter } />
+          <ProductCard productArr={ productArr } />
         </section>
       </div>
 

@@ -24,11 +24,12 @@ class ProductCard extends Component {
 
   render() {
     // const { title, thumbnail, price } = this.props;
-    const { listProductFilter } = this.props;
+    const { productArr } = this.props;
+    // console.log(productArr);
     return (
       <div>
-        {(listProductFilter.length === 0) ? (
-          listProductFilter.map((product) => (
+        {(productArr.length !== 0) ? (
+          productArr.map((product) => (
             <section key={ product.id }>
               <p>{product.title}</p>
               <img src={ product.thumbnail } alt={ product.title } />
@@ -43,7 +44,7 @@ class ProductCard extends Component {
 }
 
 ProductCard.propTypes = {
-  listProductFilter: PropTypes.arrayOf(PropTypes.object).isRequired,
+  productArr: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default ProductCard;
