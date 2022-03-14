@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Categories from './Categories';
 import ProductCard from './ProductCard';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
+import { Container } from '../styles/inicialStyle';
 
 class InicialPage extends React.Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class InicialPage extends React.Component {
   render() {
     const { seachInput, productArr, categArr } = this.state;
     return (
-      <div data-testid="home-initial-message">
+      <Container data-testid="home-initial-message">
         <fieldset>
           <input
             type="text"
@@ -104,7 +105,7 @@ class InicialPage extends React.Component {
             handleClickAddShopingCard={ this.handleClickAddShopingCard }
           />
         </section>
-      </div>
+      </Container>
 
     );
   }
