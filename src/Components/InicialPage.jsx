@@ -11,11 +11,15 @@ class InicialPage extends React.Component {
       productArr: [],
       seachInput: '',
       categArr: [],
+      productShopingCart: [],
     };
   }
 
   componentDidMount() {
     this.fetchCategories();
+    this.setState({
+      productShopingCart: JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [],
+    });
   }
 
   fetchCategories = async () => {
@@ -54,6 +58,17 @@ class InicialPage extends React.Component {
     }
   }
 
+  handleClickAddShopingCard = (objProduct) => {
+    this.setState((prevState) => ({
+      productShopingCart: [...prevState.productShopingCart, objProduct],
+    }), () => {
+      const { productShopingCart } = this.state;
+      localStorage.setItem('carrinhoDeCompras', JSON.stringify(productShopingCart));
+    });
+    // productShopingCart.push(objProduct);
+    // console.log(productShopingCart);
+  }
+
   // Testando commit
   render() {
     const { seachInput, productArr, categArr } = this.state;
@@ -87,7 +102,10 @@ class InicialPage extends React.Component {
           categArr={ categArr }
         />
         <section>
-          <ProductCard productArr={ productArr } />
+          <ProductCard
+            productArr={ productArr }
+            handleClickAddShopingCard={ this.handleClickAddShopingCard }
+          />
         </section>
       </div>
 

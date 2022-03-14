@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 // import { getProductsFromCategoryAndQuery } from '../services/api';
 
 class ProductCard extends Component {
-  constructor() {
-    super();
-    this.state = {
-      productShopingCart: [],
-    };
-  }
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     productShopingCart: [],
+  //   };
+  // }
 
   // componentDidMount() {
   //   this.fetchGetProdutcs();
@@ -22,18 +22,20 @@ class ProductCard extends Component {
   //   });
   // }
 
-  handleClickAddShopingCard = (objProduct) => {
-    const { productShopingCart } = this.state;
-    this.setState((prevState) => ({
-      productShopingCart: [...prevState.productShopingCart, objProduct],
-    }));
-    // productShopingCart.push(objProduct);
-    console.log(productShopingCart);
-  }
+  // handleClickAddShopingCard = (objProduct) => {
+  //   this.setState((prevState) => ({
+  //     productShopingCart: [...prevState.productShopingCart, objProduct],
+  //   }), () => {
+  //     const { productShopingCart } = this.state;
+  //     localStorage.setItem('carrinhoDeCompras', JSON.stringify(productShopingCart));
+  //   });
+  //   // productShopingCart.push(objProduct);
+  //   // console.log(productShopingCart);
+  // }
 
   render() {
     // const { title, thumbnail, price } = this.props;
-    const { productArr } = this.props;
+    const { productArr, handleClickAddShopingCard } = this.props;
     console.log(productArr);
     return (
       <div>
@@ -52,7 +54,7 @@ class ProductCard extends Component {
               <button
                 data-testid="product-add-to-cart"
                 type="button"
-                onClick={ () => this.handleClickAddShopingCard(product) }
+                onClick={ () => handleClickAddShopingCard(product) }
               >
                 Adicionar ao Carrinho
               </button>
@@ -67,6 +69,7 @@ class ProductCard extends Component {
 
 ProductCard.propTypes = {
   productArr: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleClickAddShopingCard: PropTypes.func.isRequired,
 };
 
 export default ProductCard;
