@@ -20,7 +20,6 @@ class ProductsDetails extends React.Component {
   }
 
   componentDidMount() {
-    // const { counterProduct } = this.state;
     this.fetchSpecifications();
     const productStorage = JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [];
     console.log(productStorage);
@@ -28,19 +27,6 @@ class ProductsDetails extends React.Component {
       productShopingCart: JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [],
       counterProduct: productStorage.length,
     });
-    // this.setState({
-    //   productShopingCart: JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [],
-    // });
-    // if (counterProduct.length !== 0) {
-    //   this.setState({
-    //     counterProduct: JSON.parse(localStorage.getItem('carrinhoDeCompras')).length,
-    //   });
-    // } else {
-    //   this.setState({
-    //     counterProduct: 0,
-    //   });
-    // }
-    // this.handleClickAddShopingCard();
   }
 
   fetchSpecifications = async () => {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import ReactRouterPropTypes from 'react-router-prpo-types';
 
 class ShoopingCart extends Component {
   constructor(props) {
@@ -21,11 +20,6 @@ class ShoopingCart extends Component {
     });
   }
 
-  // clickHistory() {
-  //   const { history } = this.props;
-  //   history.push('/InicialPage');
-  // }
-
   render() {
     const { carrinhoDeCompras, counterProduct } = this.state;
     console.log(carrinhoDeCompras);
@@ -37,7 +31,6 @@ class ShoopingCart extends Component {
               <button
                 type="button"
                 data-testid="shopping-cart-product-quantity"
-                // onClick={ this.clickHistory }
               >
                 { `${counterProduct} CA`}
               </button>
@@ -64,9 +57,5 @@ class ShoopingCart extends Component {
     );
   }
 }
-
-// Login.propTypes = {
-//   history: ReactRouterPropTypes.history.isRequired,
-// };
 
 export default ShoopingCart;
