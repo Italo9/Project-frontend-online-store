@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import Categories from './Categories';
 import ProductCard from './ProductCard';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
@@ -65,11 +66,8 @@ class InicialPage extends React.Component {
       const { productShopingCart } = this.state;
       localStorage.setItem('carrinhoDeCompras', JSON.stringify(productShopingCart));
     });
-    // productShopingCart.push(objProduct);
-    // console.log(productShopingCart);
   }
 
-  // Testando commit
   render() {
     const { seachInput, productArr, categArr } = this.state;
     return (
@@ -97,7 +95,6 @@ class InicialPage extends React.Component {
         </Link>
         <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
         <Categories
-          // fetchCategories={ this.fetchCategories }
           fetchGetProdutcs={ this.fetchGetProdutcs }
           categArr={ categArr }
         />

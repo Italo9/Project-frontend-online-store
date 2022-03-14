@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import ProductCard from './ProductCard';
+
 import { getProductDetails } from '../services/api';
 
 class ProductsDetails extends React.Component {
@@ -13,15 +13,37 @@ class ProductsDetails extends React.Component {
       thumbnail: '',
       price: '',
       specifications: [],
+      counterProduct: JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [],
+      productShopingCart: [],
+      objProduct: [],
     };
   }
 
   componentDidMount() {
+    // const { counterProduct } = this.state;
     this.fetchSpecifications();
+    const productStorage = JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [];
+    console.log(productStorage);
+    this.setState({
+      productShopingCart: JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [],
+      counterProduct: productStorage.length,
+    });
+    // this.setState({
+    //   productShopingCart: JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [],
+    // });
+    // if (counterProduct.length !== 0) {
+    //   this.setState({
+    //     counterProduct: JSON.parse(localStorage.getItem('carrinhoDeCompras')).length,
+    //   });
+    // } else {
+    //   this.setState({
+    //     counterProduct: 0,
+    //   });
+    // }
+    // this.handleClickAddShopingCard();
   }
 
   fetchSpecifications = async () => {
-    // const id = this.props.match.params.productId;
     const { match } = this.props;
     const id = match.params.productId;
     const productDetails = await getProductDetails(id);
@@ -31,27 +53,39 @@ class ProductsDetails extends React.Component {
       thumbnail: productDetails.thumbnail,
       price: productDetails.price,
       specifications: productDetails.attributes,
+      objProduct: productDetails,
     });
-    // console.log(teste1);
+  }
+
+  handleClickAddShopingCard = (objProduct) => {
+    this.setState((prevState) => ({
+      productShopingCart: [...prevState.productShopingCart, objProduct],
+      counterProduct: prevState.counterProduct + 1,
+    }), () => {
+      const { productShopingCart } = this.state;
+      localStorage.setItem('carrinhoDeCompras', JSON.stringify(productShopingCart));
+    });
   }
 
   render() {
-    const { title, thumbnail, price, specifications } = this.state;
+    const {
+      title,
+      thumbnail,
+      price,
+      specifications,
+      objProduct,
+      counterProduct } = this.state;
     return (
       <div>
         <Link data-testid="shopping-cart-button" to="/shoopingCart">
           <button type="button">
-            CC
+            {`CC ${counterProduct}`}
           </button>
         </Link>
         <div>
           <img alt={ title } src={ thumbnail } />
           <p data-testid="product-detail-name">{ title }</p>
           <p>{ price }</p>
-          <ul>
-            {/* {/* { specifications } } */}
-            {/* {specifications.map((spec) => ( spec.results.atribute   )} */}
-          </ul>
           <h3>Características</h3>
           <table>
             <tbody>
@@ -62,6 +96,13 @@ class ProductsDetails extends React.Component {
                 </tr>
               ))}
             </tbody>
+            <button
+              type="button"
+              onClick={ () => this.handleClickAddShopingCard(objProduct) }
+              data-testid="product-detail-add-to-cart"
+            >
+              Add
+            </button>
           </table>
         </div>
       </div>
@@ -70,7 +111,6 @@ class ProductsDetails extends React.Component {
 }
 
 ProductsDetails.propTypes = {
-  // query: PropTypes.string.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       productId: PropTypes.number.isRequired,
