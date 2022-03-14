@@ -81,6 +81,7 @@ class InicialPage extends React.Component {
             name="name"
             value={ seachInput }
             onChange={ this.addText }
+            data-testid="query-input"
           />
           <button
             type="button"

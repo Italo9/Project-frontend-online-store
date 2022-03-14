@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // import ProductCard from './ProductCard';
+
 import { getProductDetails } from '../services/api';
 
 class ProductsDetails extends React.Component {
@@ -21,6 +22,7 @@ class ProductsDetails extends React.Component {
   }
 
   fetchSpecifications = async () => {
+
     // const id = this.props.match.params.productId;
     const { match } = this.props;
     const id = match.params.productId;
@@ -32,6 +34,7 @@ class ProductsDetails extends React.Component {
       price: productDetails.price,
       specifications: productDetails.attributes,
     });
+
     // console.log(teste1);
   }
 
