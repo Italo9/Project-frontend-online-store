@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import InicialPage from './Components/InicialPage';
+import ProductsDetails from './Components/ProductsDetails';
 import ShoopingCart from './Components/ShoopingCart';
 
 class App extends React.Component {
@@ -16,6 +17,12 @@ class App extends React.Component {
             <Route exact path="/shoopingCart">
               <ShoopingCart />
             </Route>
+
+            <Route
+              exact
+              path="/productsDetails/:productId"
+              render={ (props) => <ProductsDetails { ...props } /> }
+            />
           </Switch>
         </BrowserRouter>
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Categories from './Categories';
 import ProductCard from './ProductCard';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 
 class InicialPage extends React.Component {
   constructor(props) {
@@ -10,62 +10,21 @@ class InicialPage extends React.Component {
     this.state = {
       productArr: [],
       seachInput: '',
-      id: '',
-      // listProductFilter: [],
-      // words: '',
-      // Search: '',
+      categArr: [],
     };
   }
 
-  // addText = ({ target }) => {
-  //   console.log(target.value);
-  //   this.setState({
-  //     seachInput: target.value,
-  //   });
-  // }
-
-  // addClickButton = () => {
-  //   this.setState((index) => ({
-  //     Search: index.words,
-  //   }));
-  //   const { words } = this.state;
-  //   getProductsFromCategoryAndQuery(words).then((index) => {
-  //     this.setState({
-  //       words: '',
-  //     });
-  //     this.setState({
-  //       productArr: index,
-  //     });
-  //   });
-  // }
-
-  // handleSearch = ({ target: { value } }) => {
-  //   console.log({ target: { value } });
-  //   const { productArr } = this.state;
-  //   this.setState({ searchInput: value }, () => (
-  //     productArr.filter((searchInput) => {
-  //     })
-  //   ));
-  // }
-
-  // filterProducts = (product) => {
-  //   this.setState({
-  //     productArr: productArr.filter((item) => item !== product),
-  //   });
-  // }
   componentDidMount() {
-    this.fetchGetProdutcs();
+    this.fetchCategories();
   }
 
-  // handleSearch = () => {
-  //   const { seachInput, productArr } = this.state;
-  //   const productFilter = productArr
-  //     .filter((element) => element.title.includes(seachInput));
-  //   console.log(productFilter);
-  //   this.setState({
-  //     listProductFilter: productFilter,
-  //   });
-  // }
+  fetchCategories = async () => {
+    const productsObj = await getCategories();
+    this.setState({
+      categArr: productsObj,
+    });
+    console.log(productsObj);
+  }
 
   addText = ({ target }) => {
     console.log(target.value);
@@ -74,17 +33,30 @@ class InicialPage extends React.Component {
     });
   }
 
-  fetchGetProdutcs = async () => {
-    const { id, seachInput } = this.state;
-    const requestProduct = await getProductsFromCategoryAndQuery(id, seachInput);
-    console.log(requestProduct.results);
-    this.setState({
-      productArr: requestProduct.results,
-    });
+  fetchGetProdutcs = async (categoryId, categoryName) => {
+    const {
+      seachInput,
+      categArr,
+    } = this.state;
+    console.log(categArr);
+    if (seachInput.length > 0) {
+      const request = await getProductsFromCategoryAndQuery(categArr.id, seachInput);
+      console.log(request);
+      this.setState({
+        productArr: request.results,
+      });
+    } else {
+      const request = await getProductsFromCategoryAndQuery(categoryId, categoryName);
+      console.log(request);
+      this.setState({
+        productArr: request.results,
+      });
+    }
   }
 
+  // Testando commit
   render() {
-    const { seachInput, productArr } = this.state;
+    const { seachInput, productArr, categArr } = this.state;
     return (
       <div data-testid="home-initial-message">
         <fieldset>
@@ -105,11 +77,15 @@ class InicialPage extends React.Component {
         </fieldset>
         <Link data-testid="shopping-cart-button" to="/shoopingCart">
           <button type="button">
-            CA
+            CC
           </button>
         </Link>
         <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
-        <Categories />
+        <Categories
+          // fetchCategories={ this.fetchCategories }
+          fetchGetProdutcs={ this.fetchGetProdutcs }
+          categArr={ categArr }
+        />
         <section>
           <ProductCard productArr={ productArr } />
         </section>
