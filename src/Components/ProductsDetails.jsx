@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import ProductCard from './ProductCard';
-import { getProductsFromCategoryAndQuery } from '../services/api';
-import { testeMaroto } from '../services/api';
+
+import { getProductDetails } from '../services/api';
 
 class ProductsDetails extends React.Component {
   constructor(props) {
@@ -14,56 +13,83 @@ class ProductsDetails extends React.Component {
       thumbnail: '',
       price: '',
       specifications: [],
-      teste: '',
+      counterProduct: JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [],
+      productShopingCart: [],
+      objProduct: [],
     };
   }
 
   componentDidMount() {
     this.fetchSpecifications();
+    const productStorage = JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [];
+    console.log(productStorage);
+    this.setState({
+      productShopingCart: JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [],
+      counterProduct: productStorage.length,
+    });
   }
 
   fetchSpecifications = async () => {
     const { match } = this.props;
-    // const { query } = this.props;
-    const { teste } = this.state;
-    console.log(this);
-    console.log(match.params.productId);
-    const ids = match.params.productId;
-    // console.log(query);
-    // const { match: { params: { id } } } = this.props;
-    console.log(ids);
-    const teste2 = await testeMaroto(ids);
-    console.log(teste2);
-    // const teste1 = testeMaroto(ids).then((retorno) => (
-    //   // console.log(query);
-    //   // console.log(productObj);
-    //   this.setState({
-    //     title: retorno.title,
-    //     thumbnail: retorno.thumbnail,
-    //     price: retorno.price,
-    //     specifications: retorno.attributes,
-    //   })
-    // ));
-    // console.log(teste1);
+    const id = match.params.productId;
+    const productDetails = await getProductDetails(id);
+    console.log(productDetails);
+    this.setState({
+      title: productDetails.title,
+      thumbnail: productDetails.thumbnail,
+      price: productDetails.price,
+      specifications: productDetails.attributes,
+      objProduct: productDetails,
+    });
+  }
+
+  handleClickAddShopingCard = (objProduct) => {
+    this.setState((prevState) => ({
+      productShopingCart: [...prevState.productShopingCart, objProduct],
+      counterProduct: prevState.counterProduct + 1,
+    }), () => {
+      const { productShopingCart } = this.state;
+      localStorage.setItem('carrinhoDeCompras', JSON.stringify(productShopingCart));
+    });
   }
 
   render() {
-    const { title, thumbnail, price, specifications } = this.state;
+    const {
+      title,
+      thumbnail,
+      price,
+      specifications,
+      objProduct,
+      counterProduct } = this.state;
     return (
       <div>
         <Link data-testid="shopping-cart-button" to="/shoopingCart">
           <button type="button">
-            CC
+            {`CC ${counterProduct}`}
           </button>
         </Link>
         <div>
           <img alt={ title } src={ thumbnail } />
-          <p>{ title }</p>
+          <p data-testid="product-detail-name">{ title }</p>
           <p>{ price }</p>
-          <ul>
-            { specifications }
-            {/* {specifications.map((spec) => ( spec.results.atribute   )} */}
-          </ul>
+          <h3>Características</h3>
+          <table>
+            <tbody>
+              {specifications.map((spec) => (
+                <tr key={ spec.name }>
+                  <td>{spec.name}</td>
+                  <td>{spec.value_name}</td>
+                </tr>
+              ))}
+            </tbody>
+            <button
+              type="button"
+              onClick={ () => this.handleClickAddShopingCard(objProduct) }
+              data-testid="product-detail-add-to-cart"
+            >
+              Add
+            </button>
+          </table>
         </div>
       </div>
     );
@@ -71,16 +97,15 @@ class ProductsDetails extends React.Component {
 }
 
 ProductsDetails.propTypes = {
-  query: PropTypes.string.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      productId: PropTypes.number.isRequired,
     }),
   }) };
 ProductsDetails.defaultProps = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      productId: PropTypes.number.isRequired,
     }),
   }) };
 

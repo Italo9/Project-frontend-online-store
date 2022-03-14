@@ -23,6 +23,10 @@ class App extends React.Component {
               path="/productsDetails/:productId"
               render={ (props) => <ProductsDetails { ...props } /> }
             />
+
+            <Route exact path="/InicialPage">
+              <InicialPage />
+            </Route>
           </Switch>
         </BrowserRouter>
       </div>

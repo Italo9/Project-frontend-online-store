@@ -1,30 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-// import { getProductsFromCategoryAndQuery } from '../services/api';
 
 class ProductCard extends Component {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     productArr: [],
-  //   };
-  // }
-
-  // componentDidMount() {
-  //   this.fetchGetProdutcs();
-  // }
-
-  // fetchGetProdutcs = async () => {
-  //   const requestProduct = await getProductsFromCategoryAndQuery();
-  //   this.setState({
-  //     productArr: requestProduct,
-  //   });
-  // }
-
   render() {
-    // const { title, thumbnail, price } = this.props;
-    const { productArr } = this.props;
+    const { productArr, handleClickAddShopingCard } = this.props;
     console.log(productArr);
     return (
       <div>
@@ -40,6 +20,13 @@ class ProductCard extends Component {
 
               <img src={ product.thumbnail } alt={ product.title } />
               <p>{product.price}</p>
+              <button
+                data-testid="product-add-to-cart"
+                type="button"
+                onClick={ () => handleClickAddShopingCard(product) }
+              >
+                Adicionar ao Carrinho
+              </button>
             </section>
           ))
         ) : ('Nenhum produto foi encontrado')}
@@ -51,6 +38,7 @@ class ProductCard extends Component {
 
 ProductCard.propTypes = {
   productArr: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleClickAddShopingCard: PropTypes.func.isRequired,
 };
 
 export default ProductCard;

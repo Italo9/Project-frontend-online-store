@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import Categories from './Categories';
 import ProductCard from './ProductCard';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
+import { Container } from '../styles/inicialStyle';
 
 class InicialPage extends React.Component {
   constructor(props) {
@@ -11,11 +13,15 @@ class InicialPage extends React.Component {
       productArr: [],
       seachInput: '',
       categArr: [],
+      productShopingCart: [],
     };
   }
 
   componentDidMount() {
     this.fetchCategories();
+    this.setState({
+      productShopingCart: JSON.parse(localStorage.getItem('carrinhoDeCompras')) || [],
+    });
   }
 
   fetchCategories = async () => {
@@ -54,18 +60,26 @@ class InicialPage extends React.Component {
     }
   }
 
-  // Testando commit
+  handleClickAddShopingCard = (objProduct) => {
+    this.setState((prevState) => ({
+      productShopingCart: [...prevState.productShopingCart, objProduct],
+    }), () => {
+      const { productShopingCart } = this.state;
+      localStorage.setItem('carrinhoDeCompras', JSON.stringify(productShopingCart));
+    });
+  }
+
   render() {
     const { seachInput, productArr, categArr } = this.state;
     return (
-      <div data-testid="home-initial-message">
+      <Container data-testid="home-initial-message">
         <fieldset>
           <input
             type="text"
+            data-testid="query-input"
             name="name"
             value={ seachInput }
             onChange={ this.addText }
-            data-testid="query-input"
           />
           <button
             type="button"
@@ -82,14 +96,16 @@ class InicialPage extends React.Component {
         </Link>
         <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
         <Categories
-          // fetchCategories={ this.fetchCategories }
           fetchGetProdutcs={ this.fetchGetProdutcs }
           categArr={ categArr }
         />
         <section>
-          <ProductCard productArr={ productArr } />
+          <ProductCard
+            productArr={ productArr }
+            handleClickAddShopingCard={ this.handleClickAddShopingCard }
+          />
         </section>
-      </div>
+      </Container>
 
     );
   }
